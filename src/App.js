@@ -108,7 +108,7 @@ const ResumeGenerator = () => {
           scale: 2,
           useCORS: true,
           letterRendering: true,
-          scrollX: 0,
+          scrollX: -7,
           scrollY: 0,
           width: 816,
           height: 1056
