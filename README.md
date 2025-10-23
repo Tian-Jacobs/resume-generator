@@ -46,7 +46,7 @@ A modern, React-based resume generator with AI-powered content generation and pr
 
 1. **Clone the repository**
    ```bash
-   git clone https://github.com/BlessedT99/resume-generator.git
+   git clone https://github.com/Tian-Jacobs/resume-generator.git
    cd resume-generator
    ```
 
@@ -231,9 +231,9 @@ This project is licensed under the MIT License - see the LICENSE file for detail
 
 ## 📧 Contact
 
-Tian Jacobs - [@BlessedT99](https://github.com/BlessedT99)
+Tian Jacobs - [@Tian-Jacobs](https://github.com/Tian-Jacobs)
 
-Project Link: [https://github.com/BlessedT99/resume-generator](https://github.com/BlessedT99/resume-generator)
+Project Link: [https://github.com/Tian-Jacobs/resume-generator](https://github.com/Tian-Jacobs/resume-generator)
 
 ---
 
