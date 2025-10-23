@@ -41,8 +41,24 @@ class GeminiService {
       "graduationDate": "Graduation Date"
     }
   ],
-  "skills": ["skill1", "skill2", "skill3"]
+  "skills": ["skill1", "skill2", "skill3"],
+  "accomplishments": ["accomplishment1", "accomplishment2", "accomplishment3"],
+  "references": [
+    {
+      "name": "Reference Full Name",
+      "title": "Job Title",
+      "company": "Company Name",
+      "email": "reference@email.com",
+      "phone": "Phone Number"
+    }
+  ]
 }
+
+Important notes:
+- Include 3-5 relevant accomplishments based on the user's description
+- If the user doesn't mention specific references, generate 2-3 realistic placeholder references or leave as empty array
+- Accomplishments should be specific achievements, certifications, awards, or notable projects
+- Make sure all JSON is properly formatted with no syntax errors
 
 User description: ${userPrompt}`;
 

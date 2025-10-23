@@ -12,7 +12,21 @@ export const AIPromptForm = ({ prompt, setPrompt, setFormData, isGenerating, set
     
     try {
       const resumeData = await geminiService.generateResumeData(prompt);
-      setFormData(resumeData);
+      
+      // Ensure accomplishments and references have default values if not provided
+      const completeResumeData = {
+        ...resumeData,
+        accomplishments: resumeData.accomplishments || [''],
+        references: resumeData.references || [{
+          name: '',
+          title: '',
+          company: '',
+          email: '',
+          phone: ''
+        }]
+      };
+      
+      setFormData(completeResumeData);
       alert('Resume generated successfully!');
     } catch (error) {
       alert(error.message);
@@ -25,12 +39,12 @@ export const AIPromptForm = ({ prompt, setPrompt, setFormData, isGenerating, set
     <div className="bg-white rounded-lg shadow-lg p-6 mb-6">
       <h2 className="text-xl font-semibold mb-4">AI Resume Generation</h2>
       <p className="text-gray-600 mb-4">
-        Describe your background, experience, skills, and career goals. The AI will generate a professional resume for you.
+        Describe your background, experience, skills, accomplishments, and career goals. Include any references if available. The AI will generate a professional resume for you.
       </p>
       <textarea
         value={prompt}
         onChange={(e) => setPrompt(e.target.value)}
-        placeholder="E.g., I'm a software engineer with 5 years of experience in React and Node.js..."
+        placeholder="E.g., I'm a software engineer with 5 years of experience in React and Node.js. I've led multiple successful projects and received the Employee of the Year award. I hold AWS certifications and have contributed to open-source projects..."
         rows={6}
         className="w-full p-3 border rounded-lg mb-4"
       />

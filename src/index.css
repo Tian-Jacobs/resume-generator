@@ -11,3 +11,32 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
+
+/* PDF Page Break Fixes */
+#resume-template {
+  page-break-inside: auto;
+}
+
+/* Prevent headings from being orphaned at bottom of page */
+#resume-template h1,
+#resume-template h2,
+#resume-template h3 {
+  page-break-after: avoid !important;
+  break-after: avoid !important;
+  orphans: 3;
+  widows: 3;
+}
+
+/* Keep content sections together when possible */
+#resume-template > div {
+  page-break-inside: avoid;
+  break-inside: avoid;
+}
+
+/* For sections that must break, avoid breaking in the middle */
+#resume-template .mb-6,
+#resume-template .mb-4,
+#resume-template .mb-3 {
+  page-break-inside: avoid;
+  break-inside: avoid;
+}

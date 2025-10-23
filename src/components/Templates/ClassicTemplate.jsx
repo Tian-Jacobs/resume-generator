@@ -2,7 +2,7 @@
 import React from 'react';
 
 export const ClassicTemplate = ({ formData }) => (
-  <div className="bg-white p-6 shadow-lg" style={{ width: '8.5in', minHeight: '11in' }}>
+  <div className="bg-white shadow-lg" style={{ width: '8.5in', minHeight: 'auto', padding: '0.5in' }}>
     {/* Header Section */}
     <div className="text-center mb-6 border-b-2 border-gray-300 pb-4">
       <h1 className="text-2xl font-serif font-bold mb-2">{formData.personalInfo.fullName}</h1>
@@ -51,11 +51,42 @@ export const ClassicTemplate = ({ formData }) => (
     </div>
 
     {/* Skills */}
-    <div>
+    <div className="mb-5">
       <h2 className="text-base font-serif font-bold mb-3 text-center">SKILLS</h2>
       <p className="text-center text-gray-700 text-sm leading-relaxed">
         {formData.skills.filter(skill => skill.trim()).join(' • ')}
       </p>
     </div>
+
+    {/* Accomplishments */}
+    {formData.accomplishments && formData.accomplishments.filter(acc => acc.trim()).length > 0 && (
+      <div className="mb-5">
+        <h2 className="text-base font-serif font-bold mb-3 text-center">ACCOMPLISHMENTS</h2>
+        <ul className="list-none space-y-1 px-8">
+          {formData.accomplishments.filter(acc => acc.trim()).map((accomplishment, index) => (
+            <li key={index} className="text-gray-700 text-xs text-center leading-relaxed">
+              • {accomplishment}
+            </li>
+          ))}
+        </ul>
+      </div>
+    )}
+
+    {/* References */}
+    {formData.references && formData.references.filter(ref => ref.name.trim()).length > 0 && (
+      <div>
+        <h2 className="text-base font-serif font-bold mb-3 text-center">REFERENCES</h2>
+        {formData.references.filter(ref => ref.name.trim()).map((ref, index) => (
+          <div key={index} className="text-center mb-3">
+            <p className="font-semibold text-sm">{ref.name}</p>
+            <p className="italic text-sm">{ref.title}{ref.company && ` at ${ref.company}`}</p>
+            <div className="text-gray-600 text-xs">
+              {ref.email && <p>{ref.email}</p>}
+              {ref.phone && <p>{ref.phone}</p>}
+            </div>
+          </div>
+        ))}
+      </div>
+    )}
   </div>
 );

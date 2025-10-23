@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
-import { Download, Edit3, Zap } from 'lucide-react';
+import { Download, Edit3, Zap, Trash2 } from 'lucide-react';
+import { pdf } from '@react-pdf/renderer';
 
 // Hooks
 import { useResumeData } from './hooks/useResumeData';
@@ -10,12 +11,20 @@ import { PersonalInfoForm } from './components/Forms/PersonalInfoForm';
 import { ExperienceForm } from './components/Forms/ExperienceForm';
 import { EducationForm } from './components/Forms/EducationForm';
 import { SkillsForm } from './components/Forms/SkillsForm';
+import { AccomplishmentsForm } from './components/Forms/AccomplishmentsForm';
+import { ReferencesForm } from './components/Forms/ReferencesForm';
 
-// Templates
+// Templates (for preview)
 import { ModernTemplate } from './components/Templates/ModernTemplate';
 import { ClassicTemplate } from './components/Templates/ClassicTemplate';
 import { MinimalTemplate } from './components/Templates/MinimalTemplate';
 import { CreativeTemplate } from './components/Templates/CreativeTemplate';
+
+// PDF Templates
+import { ModernPDFTemplate } from './components/PDFTemplates/ModernPDFTemplate';
+import { ClassicPDFTemplate } from './components/PDFTemplates/ClassicPDFTemplate';
+import { MinimalPDFTemplate } from './components/PDFTemplates/MinimalPDFTemplate';
+import { ExecutivePDFTemplate } from './components/PDFTemplates/ExecutivePDFTemplate';
 
 const ResumeGenerator = () => {
   // State management
@@ -41,58 +50,56 @@ const ResumeGenerator = () => {
     creative: 'Creative'
   };
 
-  // PDF Export functionality
-  const exportToPDF = () => {
+    // PDF Export functionality using react-pdf
+  const exportToPDF = async () => {
     try {
-      // Check if html2pdf is available
-      if (typeof window.html2pdf === 'undefined') {
-        // Load html2pdf script dynamically
-        const script = document.createElement('script');
-        script.src = 'https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js';
-        script.onload = () => {
-          setTimeout(() => exportToPDF(), 100);
-        };
-        script.onerror = () => {
-          alert('Failed to load PDF library. Please check your internet connection and try again.');
-        };
-        document.head.appendChild(script);
-        return;
+      // Select the appropriate PDF template based on current template
+      let PDFTemplate;
+      switch (currentTemplate) {
+        case 'modern':
+          PDFTemplate = ModernPDFTemplate;
+          break;
+        case 'classic':
+          PDFTemplate = ClassicPDFTemplate;
+          break;
+        case 'minimal':
+          PDFTemplate = MinimalPDFTemplate;
+          break;
+        case 'creative':
+          PDFTemplate = ExecutivePDFTemplate;
+          break;
+        default:
+          PDFTemplate = ModernPDFTemplate;
       }
 
-      const element = document.getElementById('resume-template');
-      if (!element) {
-        alert('Resume template not found. Please try again.');
-        return;
-      }
-
-      const opt = {
-        margin: 0,
-        filename: `${formData.personalInfo.fullName || 'resume'}.pdf`,
-        image: { type: 'jpeg', quality: 0.98 },
-        html2canvas: { 
-          scale: 2,
-          useCORS: true,
-          letterRendering: true,
-          scrollX: -7,
-          scrollY: 0,
-          width: 816,
-          height: 1056
-        },
-        jsPDF: { 
-          unit: 'in', 
-          format: 'letter', 
-          orientation: 'portrait' 
-        }
-      };
-
-      window.html2pdf().set(opt).from(element).save().catch((error) => {
-        console.error('PDF generation failed:', error);
-        alert('PDF generation failed. Please try again.');
-      });
-
+      // Generate PDF blob
+      const blob = await pdf(<PDFTemplate formData={formData} />).toBlob();
+      
+      // Create download link
+      const url = URL.createObjectURL(blob);
+      const link = document.createElement('a');
+      link.href = url;
+      link.download = `${formData.personalInfo.fullName || 'resume'}.pdf`;
+      
+      // Trigger download
+      document.body.appendChild(link);
+      link.click();
+      
+      // Cleanup
+      document.body.removeChild(link);
+      URL.revokeObjectURL(url);
+      
     } catch (error) {
       console.error('PDF export failed:', error);
       alert('PDF export failed. Please try again.');
+    }
+  };
+
+  // Clear all data
+  const clearAllData = () => {
+    if (window.confirm('Are you sure you want to clear all resume data? This cannot be undone.')) {
+      localStorage.removeItem('resumeGeneratorData');
+      window.location.reload();
     }
   };
 
@@ -190,6 +197,15 @@ const ResumeGenerator = () => {
             <Download className="w-5 h-5" />
             Export PDF
           </button>
+
+          {/* Clear Data Button */}
+          <button
+            onClick={clearAllData}
+            className="w-full flex items-center justify-center gap-2 bg-red-600 text-white py-3 px-4 rounded-lg font-medium hover:bg-red-700 transition-colors mt-3"
+          >
+            <Trash2 className="w-5 h-5" />
+            Clear All Data
+          </button>
         </div>
       </div>
 
@@ -233,6 +249,20 @@ const ResumeGenerator = () => {
                 />
 
                 <SkillsForm
+                  formData={formData}
+                  handleInputChange={handleInputChange}
+                  addArrayItem={addArrayItem}
+                  removeArrayItem={removeArrayItem}
+                />
+
+                <AccomplishmentsForm
+                  formData={formData}
+                  handleInputChange={handleInputChange}
+                  addArrayItem={addArrayItem}
+                  removeArrayItem={removeArrayItem}
+                />
+
+                <ReferencesForm
                   formData={formData}
                   handleInputChange={handleInputChange}
                   addArrayItem={addArrayItem}

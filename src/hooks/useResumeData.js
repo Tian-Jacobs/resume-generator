@@ -1,7 +1,31 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+
+const STORAGE_KEY = 'resumeGeneratorData';
+
+// Load data from localStorage
+const loadFromStorage = () => {
+  try {
+    const savedData = localStorage.getItem(STORAGE_KEY);
+    if (savedData) {
+      return JSON.parse(savedData);
+    }
+  } catch (error) {
+    console.error('Error loading data from localStorage:', error);
+  }
+  return null;
+};
+
+// Save data to localStorage
+const saveToStorage = (data) => {
+  try {
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
+  } catch (error) {
+    console.error('Error saving data to localStorage:', error);
+  }
+};
 
 export const useResumeData = () => {
-  const [formData, setFormData] = useState({
+  const initialData = {
     personalInfo: {
       fullName: '',
       email: '',
@@ -25,8 +49,26 @@ export const useResumeData = () => {
       graduationDate: ''
     }],
     skills: [''],
-    achievements: ['']
+    achievements: [''],
+    accomplishments: [''],
+    references: [{
+      name: '',
+      title: '',
+      company: '',
+      email: '',
+      phone: ''
+    }]
+  };
+
+  const [formData, setFormData] = useState(() => {
+    const savedData = loadFromStorage();
+    return savedData || initialData;
   });
+
+  // Save to localStorage whenever formData changes
+  useEffect(() => {
+    saveToStorage(formData);
+  }, [formData]);
 
   const handleInputChange = (section, field, value, index = null) => {
     setFormData(prev => {

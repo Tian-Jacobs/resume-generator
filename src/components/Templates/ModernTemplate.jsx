@@ -1,7 +1,7 @@
 import React from 'react';
 
 export const ModernTemplate = ({ formData }) => (
-  <div className="bg-white p-6 shadow-lg" style={{ width: '8.5in', minHeight: '11in' }}>
+  <div className="bg-white shadow-lg" style={{ width: '8.5in', minHeight: 'auto', padding: '0.5in' }}>
     <div className="border-l-4 border-blue-600 pl-6 mb-6">
       <h1 className="text-3xl font-bold text-gray-800 mb-2">{formData.personalInfo.fullName}</h1>
       <div className="text-gray-600 space-y-1 text-sm">
@@ -53,5 +53,32 @@ export const ModernTemplate = ({ formData }) => (
         ))}
       </div>
     </div>
+
+    {formData.accomplishments && formData.accomplishments.filter(acc => acc.trim()).length > 0 && (
+      <div className="mt-6">
+        <h2 className="text-lg font-semibold text-blue-600 mb-2 border-b-2 border-blue-600 pb-1">ACCOMPLISHMENTS</h2>
+        <ul className="list-disc list-inside space-y-1">
+          {formData.accomplishments.filter(acc => acc.trim()).map((accomplishment, index) => (
+            <li key={index} className="text-gray-700 text-xs leading-relaxed">{accomplishment}</li>
+          ))}
+        </ul>
+      </div>
+    )}
+
+    {formData.references && formData.references.filter(ref => ref.name.trim()).length > 0 && (
+      <div className="mt-6">
+        <h2 className="text-lg font-semibold text-blue-600 mb-2 border-b-2 border-blue-600 pb-1">REFERENCES</h2>
+        {formData.references.filter(ref => ref.name.trim()).map((ref, index) => (
+          <div key={index} className="mb-3">
+            <h3 className="font-semibold text-gray-800 text-sm">{ref.name}</h3>
+            <p className="text-blue-600 text-xs">{ref.title}{ref.company && ` at ${ref.company}`}</p>
+            <div className="text-gray-600 text-xs">
+              {ref.email && <p>{ref.email}</p>}
+              {ref.phone && <p>{ref.phone}</p>}
+            </div>
+          </div>
+        ))}
+      </div>
+    )}
   </div>
 );
