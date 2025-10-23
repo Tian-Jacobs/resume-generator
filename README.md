@@ -1,6 +1,194 @@
-# Getting Started with Create React App
+# 📄 AI Resume Generator
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+A modern, React-based resume generator with AI-powered content generation and professional PDF export capabilities.
+
+## ✨ Features
+
+### 🤖 AI-Powered Generation
+- Generate complete resumes using Google's Gemini AI
+- Intelligent content creation based on job descriptions and personal details
+- Automatic population of all sections including accomplishments and references
+
+### 🎨 Multiple Professional Templates
+- **Modern Template** - Clean blue theme with modern layout
+- **Classic Template** - Traditional serif font, centered design
+- **Minimal Template** - Minimalist gray aesthetic
+- **Executive Template** - Professional dark header design
+
+### 📥 Advanced PDF Export
+- High-quality PDF generation using `@react-pdf/renderer`
+- Perfect page break handling - no split sections
+- Automatic top spacing for new page sections
+- Print-ready professional formatting
+
+### 💾 Auto-Save Feature
+- Automatic localStorage persistence
+- Data survives page refreshes and browser sessions
+- One-click clear data option with confirmation
+
+### 📝 Comprehensive Sections
+- Personal Information (name, contact, LinkedIn)
+- Professional Summary
+- Work Experience (multiple entries)
+- Education (multiple entries)
+- Skills (tags/badges)
+- Key Accomplishments (bullet points)
+- Professional References
+
+## 🚀 Getting Started
+
+### Prerequisites
+- Node.js (v14 or higher)
+- npm or yarn
+- Google Gemini API key (for AI features)
+
+### Installation
+
+1. **Clone the repository**
+   ```bash
+   git clone https://github.com/BlessedT99/resume-generator.git
+   cd resume-generator
+   ```
+
+2. **Install dependencies**
+   ```bash
+   npm install
+   ```
+
+3. **Set up environment variables**
+   
+   Create a `.env` file in the root directory:
+   ```env
+   REACT_APP_GEMINI_API_KEY=your_gemini_api_key_here
+   ```
+   
+   Get your API key from [Google AI Studio](https://makersuite.google.com/app/apikey)
+
+4. **Start the development server**
+   ```bash
+   npm start
+   ```
+
+5. **Open your browser**
+   
+   Navigate to `http://localhost:3000`
+
+## 🎯 Usage
+
+### Manual Entry Mode
+1. Click **"Manual Entry"** in the sidebar
+2. Fill in your information in each section
+3. Use **+ Add** buttons to add multiple experiences, education, skills, etc.
+4. Data is auto-saved as you type
+
+### AI Generation Mode
+1. Click **"AI Generate"** in the sidebar
+2. Enter your job title, years of experience, and target job description
+3. Click **"Generate Resume"**
+4. AI will populate all sections automatically
+5. Review and edit as needed
+
+### Exporting PDF
+1. Select your preferred template from the sidebar
+2. Click **"Export PDF"** button
+3. PDF downloads automatically with your name
+
+### Managing Data
+- **Auto-Save**: All changes are automatically saved to browser storage
+- **Clear Data**: Click "Clear All Data" button to reset and start fresh
+- **Persistence**: Data remains even after closing browser
+
+## 🛠️ Tech Stack
+
+### Frontend
+- **React** - UI framework
+- **Tailwind CSS** - Styling
+- **Lucide React** - Icons
+
+### PDF Generation
+- **@react-pdf/renderer** - PDF creation and rendering
+- Custom PDF templates for each design
+
+### AI Integration
+- **Google Generative AI (Gemini)** - AI content generation
+- Custom prompts for resume sections
+
+### Storage
+- **localStorage** - Client-side data persistence
+
+## 📦 Project Structure
+
+```
+resume-generator/
+├── public/
+│   ├── index.html
+│   └── manifest.json
+├── src/
+│   ├── components/
+│   │   ├── Forms/
+│   │   │   ├── AIPromptForm.jsx
+│   │   │   ├── PersonalInfoForm.jsx
+│   │   │   ├── ExperienceForm.jsx
+│   │   │   ├── EducationForm.jsx
+│   │   │   ├── SkillsForm.jsx
+│   │   │   ├── AccomplishmentsForm.jsx
+│   │   │   └── ReferencesForm.jsx
+│   │   ├── Templates/
+│   │   │   ├── ModernTemplate.jsx
+│   │   │   ├── ClassicTemplate.jsx
+│   │   │   ├── MinimalTemplate.jsx
+│   │   │   └── CreativeTemplate.jsx
+│   │   └── PDFTemplates/
+│   │       ├── ModernPDFTemplate.jsx
+│   │       ├── ClassicPDFTemplate.jsx
+│   │       ├── MinimalPDFTemplate.jsx
+│   │       └── ExecutivePDFTemplate.jsx
+│   ├── hooks/
+│   │   └── useResumeData.js
+│   ├── services/
+│   │   └── geminiService.js
+│   ├── App.js
+│   ├── index.js
+│   └── index.css
+├── .env
+├── package.json
+└── README.md
+```
+
+## 🎨 Template Customization
+
+Each template has two versions:
+- **Preview Template** (in `components/Templates/`) - For on-screen preview
+- **PDF Template** (in `components/PDFTemplates/`) - For PDF export
+
+To customize styling:
+1. Edit StyleSheet in PDF template files
+2. Modify Tailwind classes in preview templates
+
+## 🔧 Configuration
+
+### Environment Variables
+- `REACT_APP_GEMINI_API_KEY` - Your Google Gemini API key
+
+### localStorage Key
+- Data is stored under: `resumeGeneratorData`
+
+## 📝 Features in Detail
+
+### Page Break Handling
+- Sections use `wrap={false}` to prevent splitting
+- `break: 'avoid'` in styles prevents awkward breaks
+- Top padding (36pt) applied to sections that typically start on page 2
+
+### Data Validation
+- Email format validation
+- Phone number validation
+- Required field checks before AI generation
+
+### Responsive Design
+- Sidebar navigation
+- Flexible form layouts
+- Mobile-friendly interface
 
 ## Available Scripts
 
@@ -11,43 +199,46 @@ In the project directory, you can run:
 Runs the app in the development mode.\
 Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+### `npm run build`
+
+Builds the app for production to the `build` folder.
 
 ### `npm test`
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+Launches the test runner in the interactive watch mode.
 
-### `npm run build`
+## 🤝 Contributing
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+Contributions are welcome! Please feel free to submit a Pull Request.
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+1. Fork the repository
+2. Create your feature branch (`git checkout -b feature/AmazingFeature`)
+3. Commit your changes (`git commit -m 'Add some AmazingFeature'`)
+4. Push to the branch (`git push origin feature/AmazingFeature`)
+5. Open a Pull Request
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+## 📄 License
 
-### `npm run eject`
+This project is licensed under the MIT License - see the LICENSE file for details.
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+## 🙏 Acknowledgments
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+- [React](https://reactjs.org/)
+- [Tailwind CSS](https://tailwindcss.com/)
+- [react-pdf/renderer](https://react-pdf.org/)
+- [Google Gemini AI](https://deepmind.google/technologies/gemini/)
+- [Lucide Icons](https://lucide.dev/)
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+## 📧 Contact
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+Tian Jacobs - [@BlessedT99](https://github.com/BlessedT99)
 
-## Learn More
+Project Link: [https://github.com/BlessedT99/resume-generator](https://github.com/BlessedT99/resume-generator)
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+---
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+Made with ❤️ by Tian Jacobs
 
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
 
 ### Analyzing the Bundle Size
 
