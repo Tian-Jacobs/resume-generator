@@ -18,6 +18,31 @@ code {
   box-sizing: border-box;
 }
 
+/* Resume Preview Scaling */
+.resume-preview-mobile {
+  transform: scale(0.40);
+  margin-bottom: -60%;
+}
+
+.resume-preview-desktop {
+  transform: scale(0.7);
+  margin-bottom: -30%;
+}
+
+@media (min-width: 768px) {
+  .resume-preview-mobile {
+    transform: scale(0.5);
+    margin-bottom: -50%;
+  }
+}
+
+@media (min-width: 1024px) {
+  .resume-preview-desktop {
+    transform: scale(0.7);
+    margin-bottom: -30%;
+  }
+}
+
 @media (max-width: 768px) {
   body {
     font-size: 14px;

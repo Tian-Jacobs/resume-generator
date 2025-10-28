@@ -303,16 +303,15 @@ const ResumeGenerator = () => {
               <h3 className="text-base md:text-lg font-semibold mb-3 md:mb-4">
                 Preview ({templates[currentTemplate]} Template)
               </h3>
-              <div className="bg-gray-200 p-1 md:p-2 rounded-lg border-2 border-gray-300" 
-                   style={{ maxHeight: '90vh', overflowY: 'auto' }}>
+              <div className="bg-gray-200 p-1 md:p-2 rounded-lg border-2 border-gray-300 overflow-auto" 
+                   style={{ maxHeight: '65vh' }}>
                 <div className="flex justify-center">
                   <div 
-                    className="w-full md:w-auto"
+                    id="preview-container"
+                    className="resume-preview-mobile md:resume-preview-desktop"
                     style={{ 
-                      transform: mode === 'automatic' ? 'scale(0.35)' : 'scale(0.45)', 
-                      transformOrigin: 'top center',
-                      marginBottom: mode === 'automatic' ? '-65%' : '-55%',
-                      width: '816px'
+                      width: '816px',
+                      transformOrigin: 'top center'
                     }}
                   >
                     <div id="resume-template">
