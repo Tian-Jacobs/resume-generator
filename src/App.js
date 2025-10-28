@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Download, Edit3, Zap, Trash2 } from 'lucide-react';
+import { Download, Edit3, Zap, Trash2, Menu, X } from 'lucide-react';
 import { pdf } from '@react-pdf/renderer';
 
 // Hooks
@@ -32,6 +32,7 @@ const ResumeGenerator = () => {
   const [mode, setMode] = useState('manual'); // 'manual' or 'automatic'
   const [prompt, setPrompt] = useState('');
   const [isGenerating, setIsGenerating] = useState(false);
+  const [sidebarOpen, setSidebarOpen] = useState(false); // Mobile sidebar toggle
 
   // Custom hook for resume data management
   const {
@@ -136,16 +137,36 @@ const ResumeGenerator = () => {
   );
 
   return (
-    <div className="min-h-screen bg-gray-100 flex">
+    <div className="min-h-screen bg-gray-100">
+      {/* Mobile Header */}
+      <div className="lg:hidden bg-white shadow-md p-4 flex items-center justify-between sticky top-0 z-50">
+        <h1 className="text-xl font-bold text-gray-800">Resume Generator</h1>
+        <button
+          onClick={() => setSidebarOpen(!sidebarOpen)}
+          className="p-2 rounded-lg bg-gray-100 hover:bg-gray-200"
+        >
+          {sidebarOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
+        </button>
+      </div>
+
+      <div className="flex">
       {/* Side Navigation */}
-      <div className="w-64 bg-white shadow-lg">
-        <div className="p-6">
-          <h1 className="text-2xl font-bold text-gray-800 mb-6">Resume Generator</h1>
+      <div className={`
+        fixed lg:static inset-y-0 left-0 z-40
+        w-64 bg-white shadow-lg
+        transform transition-transform duration-300 ease-in-out
+        ${sidebarOpen ? 'translate-x-0' : '-translate-x-full lg:translate-x-0'}
+      `}>
+        <div className="p-6 overflow-y-auto h-full">
+          <h1 className="hidden lg:block text-2xl font-bold text-gray-800 mb-6">Resume Generator</h1>
           
           {/* Mode Selection */}
           <div className="space-y-2">
             <button
-              onClick={() => setMode('manual')}
+              onClick={() => {
+                setMode('manual');
+                setSidebarOpen(false);
+              }}
               className={`w-full flex items-center gap-3 px-4 py-3 rounded-lg font-medium transition-colors ${
                 mode === 'manual'
                   ? 'bg-blue-600 text-white'
@@ -157,7 +178,10 @@ const ResumeGenerator = () => {
             </button>
             
             <button
-              onClick={() => setMode('automatic')}
+              onClick={() => {
+                setMode('automatic');
+                setSidebarOpen(false);
+              }}
               className={`w-full flex items-center gap-3 px-4 py-3 rounded-lg font-medium transition-colors ${
                 mode === 'automatic'
                   ? 'bg-blue-600 text-white'
@@ -176,7 +200,10 @@ const ResumeGenerator = () => {
               {Object.entries(templates).map(([key, name]) => (
                 <button
                   key={key}
-                  onClick={() => setCurrentTemplate(key)}
+                  onClick={() => {
+                    setCurrentTemplate(key);
+                    setSidebarOpen(false);
+                  }}
                   className={`w-full text-left px-3 py-2 rounded-md text-sm transition-colors ${
                     currentTemplate === key
                       ? 'bg-blue-100 text-blue-600'
@@ -210,7 +237,7 @@ const ResumeGenerator = () => {
       </div>
 
       {/* Main Content */}
-      <div className="flex-1 p-6">
+      <div className="flex-1 p-4 md:p-6">
         <div className="max-w-7xl mx-auto">
           {/* AI Generation Mode */}
           {mode === 'automatic' && (
@@ -223,10 +250,10 @@ const ResumeGenerator = () => {
             />
           )}
 
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 md:gap-8">
             {/* Form Section - Only show in manual mode */}
             {mode === 'manual' && (
-              <div className="space-y-6">
+              <div className="space-y-4 md:space-y-6">
                 <PersonalInfoForm 
                   formData={formData}
                   handleInputChange={handleInputChange}
@@ -273,17 +300,18 @@ const ResumeGenerator = () => {
 
             {/* Preview Section */}
             <div className={`${mode === 'manual' ? '' : 'col-span-full'} lg:sticky lg:top-4`}>
-              <h3 className="text-lg font-semibold mb-4">
+              <h3 className="text-base md:text-lg font-semibold mb-3 md:mb-4">
                 Preview ({templates[currentTemplate]} Template)
               </h3>
-              <div className="bg-gray-200 p-2 rounded-lg border-2 border-gray-300" 
+              <div className="bg-gray-200 p-1 md:p-2 rounded-lg border-2 border-gray-300" 
                    style={{ maxHeight: '90vh', overflowY: 'auto' }}>
                 <div className="flex justify-center">
                   <div 
+                    className="w-full md:w-auto"
                     style={{ 
-                      transform: mode === 'automatic' ? 'scale(0.5)' : 'scale(0.7)', 
+                      transform: mode === 'automatic' ? 'scale(0.35)' : 'scale(0.45)', 
                       transformOrigin: 'top center',
-                      marginBottom: mode === 'automatic' ? '-50%' : '-30%',
+                      marginBottom: mode === 'automatic' ? '-65%' : '-55%',
                       width: '816px'
                     }}
                   >
@@ -297,6 +325,15 @@ const ResumeGenerator = () => {
           </div>
         </div>
       </div>
+      </div>
+
+      {/* Overlay for mobile sidebar */}
+      {sidebarOpen && (
+        <div
+          className="fixed inset-0 bg-black bg-opacity-50 z-30 lg:hidden"
+          onClick={() => setSidebarOpen(false)}
+        />
+      )}
     </div>
   );
 };
